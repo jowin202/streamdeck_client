@@ -1,17 +1,19 @@
 from Key import Key
 
 class Folder:
-    num = -1
+    maxkey = -1
     name = ""
     keys = []
     next_dir = None
     prev_dir = None
     selected_key = -1
     
-    def __init__(self, name, num):
-        self.num = num
+    def __init__(self, name, maxkey):
+        self.maxkey = maxkey
         self.name = name
-        self.keys = [None] * num
+        self.keys = [None] * maxkey
+        self.keys[maxkey-1] = Key(None, None, None)
+        self.keys[maxkey-1].is_back_button = True
         #todo back button
         
     def set_key(self, keynr, icon, callback):
@@ -22,10 +24,16 @@ class Folder:
         
     #export this from class
     def key_pressed_callback(self, keynr):
-        if self.keys[keynr] == None or self.keys[keynr].callback == None:
+        current_dir = self
+        while current_dir.next_dir != None:
+            current_dir = current_dir.next_dir
+        
+        if current_dir.keys[keynr] != None and current_dir.keys[keynr].is_back_button:
+            current_dir.prev_dir.next_dir = None
+        elif current_dir.keys[keynr] == None or current_dir.keys[keynr].callback == None:
             print("button " + str(keynr) + " in folder " + str(self.name) + " does not work")
-        elif type(self.keys[keynr].callback) == Folder: # check if back button
-            self.next_dir = self.keys[keynr].callback
+        elif type(current_dir.keys[keynr].callback) == Folder: 
+            current_dir.next_dir = current_dir.keys[keynr].callback
         else:
             pass # run programm
         

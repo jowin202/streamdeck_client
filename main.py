@@ -27,9 +27,13 @@ root.set_key(3, "icon platzhalter", folder_epson)
 root.set_key(4, "icon platzhalter", folder_hue)
 
 
-
+root.current_dir()
 root.key_pressed_callback(5)
 root.key_pressed_callback(6)
 root.key_pressed_callback(2)
+root.current_dir()
 root.key_pressed_callback(2)
 root.current_dir()
+root.key_pressed_callback(31)
+root.current_dir()
+

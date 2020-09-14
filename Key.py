@@ -11,3 +11,5 @@ class Key:
         self.icon = icon
         self.callback = callback
         
+    def set_back_button(self):
+        self.is_back_button = True
