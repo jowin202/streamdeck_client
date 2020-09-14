@@ -10,6 +10,7 @@ from StreamDeck.ImageHelpers import PILHelper
 from Folder import Folder
 from Key import Key
 
+from OBS import *
 
 
 root = Folder("root", 32)
@@ -27,6 +28,11 @@ root.set_key(3, "icon platzhalter", folder_epson)
 root.set_key(4, "icon platzhalter", folder_hue)
 
 
+folder_obs.set_key(0, "icon platzhalter", mute_mic)
+folder_obs.set_key(1, "icon platzhalter", unmute_mic)
+
+
+
 root.current_dir()
 root.key_pressed_callback(5)
 root.key_pressed_callback(6)
@@ -34,6 +40,8 @@ root.key_pressed_callback(2)
 root.current_dir()
 root.key_pressed_callback(2)
 root.current_dir()
+root.key_pressed_callback(0)
+root.key_pressed_callback(1)
 root.key_pressed_callback(31)
 root.current_dir()
 

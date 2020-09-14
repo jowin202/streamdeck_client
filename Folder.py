@@ -35,7 +35,7 @@ class Folder:
         elif type(current_dir.keys[keynr].callback) == Folder: 
             current_dir.next_dir = current_dir.keys[keynr].callback
         else:
-            pass # run programm
+            current_dir.keys[keynr].callback()
         
     
     def current_dir(self):
