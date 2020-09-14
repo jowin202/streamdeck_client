@@ -1,16 +1,11 @@
 
 
-
-def mute_mic():
-    print("Mic Muted")
     
+def toggle_recording():
+    print("toggle recording")
     
-def unmute_mic():
-    print("Mic Unmuted")
+def toggle_streaming():
+    print("toggle streaming")
     
-def screen_black():
-    print("screen black")
-    
-def screen_unblack():
-    print("screen unblacked")
-
+def toggle_mute_mic():
+    print("toggle mute mic")

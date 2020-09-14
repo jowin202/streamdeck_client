@@ -28,8 +28,8 @@ root.set_key(3, "icon platzhalter", folder_epson)
 root.set_key(4, "icon platzhalter", folder_hue)
 
 
-folder_obs.set_key(0, "icon platzhalter", mute_mic)
-folder_obs.set_key(1, "icon platzhalter", unmute_mic)
+folder_obs.set_key(0, "icon platzhalter", toggle_recording)
+folder_obs.set_key(1, "icon platzhalter", toggle_streaming)
 
 
 
