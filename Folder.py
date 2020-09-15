@@ -12,14 +12,14 @@ class Folder:
         self.maxkey = maxkey
         self.name = name
         self.keys = [None] * maxkey
-        self.keys[maxkey-1] = Key(None, None, None)
+        self.keys[maxkey-1] = Key(None, None, None, None)
         self.keys[maxkey-1].is_back_button = True
         #todo back button
         
-    def set_key(self, keynr, icon, callback):
-        if type(callback) == Folder:
+    def set_key(self, keynr, text, icon, callback):
+        if issubclass(type(callback), Folder):
             callback.prev_dir = self
-        self.keys[keynr] = Key(keynr, icon, callback)
+        self.keys[keynr] = Key(keynr, text, icon, callback)
         
         
     #export this from class
@@ -32,7 +32,7 @@ class Folder:
             current_dir.prev_dir.next_dir = None
         elif current_dir.keys[keynr] == None or current_dir.keys[keynr].callback == None:
             print("button " + str(keynr) + " in folder " + str(self.name) + " does not work")
-        elif type(current_dir.keys[keynr].callback) == Folder: 
+        elif issubclass(type(current_dir.keys[keynr].callback), Folder): 
             current_dir.next_dir = current_dir.keys[keynr].callback
         else:
             current_dir.keys[keynr].callback()
