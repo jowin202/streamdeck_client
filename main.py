@@ -7,12 +7,17 @@ from PIL import Image, ImageDraw, ImageFont
 from StreamDeck.DeviceManager import DeviceManager
 from StreamDeck.ImageHelpers import PILHelper
 
+from streamdeck import render_key_image
+
 from Folder import Folder
 from Key import Key
 
 from Hue import Hue_Folder
 
 from OBS import *
+
+ICON_PATH = os.path.join(os.path.dirname(__file__), "icons")
+
 
 
 root = Folder("root", 32)
@@ -23,11 +28,11 @@ folder_obs = Folder("OBS", 32)
 folder_epson = Folder("Epson", 32)
 folder_hue = Hue_Folder(32)
 
-root.set_key(0, "LaTeX", "icon platzhalter", folder_latex)
-root.set_key(1, "Xournal", "icon platzhalter", folder_xournal)
-root.set_key(2, "OBS", "icon platzhalter", folder_obs)
-root.set_key(3, "Epson", "icon platzhalter", folder_epson)
-root.set_key(4, "Hue", "icon platzhalter", folder_hue)
+root.set_key(0, "LaTeX", "latex.png", folder_latex)
+root.set_key(1, "Xournal", "xournal/xournal.png", folder_xournal)
+root.set_key(2, "OBS", "obs.png", folder_obs)
+root.set_key(3, "Epson", "epson.jpg", folder_epson)
+root.set_key(4, "Hue", "hue.png", folder_hue)
 
 
 folder_obs.set_key(0, "Recording", "icon platzhalter", toggle_recording)
@@ -60,6 +65,60 @@ root.current_dir()
 root.key_pressed_callback(31)
 root.current_dir()'''
 
-root.show_dir()
 
 
+#print(root.get_keys())
+#root.key_pressed_callback(4)
+#print(root.get_keys())
+
+
+#exit()
+
+
+
+    
+
+def update_buttons(deck):
+    keys = root.get_keys()
+    for i in keys:
+        key = keys[i]
+        img = render_key_image(deck, os.path.join(ICON_PATH, key[0]), os.path.join(ICON_PATH, "font.ttf"), key[1])
+        deck.set_key_image(i, img)
+
+
+
+def key_change_callback(deck, key, state):
+    print("Deck {} Key {} = {}".format(deck.id(), key, state), flush=True)
+    if state == True:
+        root.key_pressed_callback(key)
+        root.current_dir()
+    else:
+        deck.reset()
+        update_buttons(deck)
+    
+streamdecks = DeviceManager().enumerate()
+print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
+for index, deck in enumerate(streamdecks):
+    deck.open()
+    deck.reset()
+
+    print("Opened '{}' device (serial number: '{}')".format(deck.deck_type(), deck.get_serial_number()))
+
+    # Set initial screen brightness to 30%.
+    deck.set_brightness(100)
+
+    # Set initial key images.
+    update_buttons(deck)
+
+    # Register callback function for when a key state changes.
+    deck.set_key_callback(key_change_callback)
+
+    # Wait until all application threads have terminated (for this example,
+    # this is when all deck handles are closed).
+    for t in threading.enumerate():
+        if t is threading.currentThread():
+            continue
+
+        if t.is_alive():
+            t.join()
+    

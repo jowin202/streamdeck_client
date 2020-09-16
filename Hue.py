@@ -22,8 +22,8 @@ class Hue_Folder(Folder):
         folder_lights = Folder("Lights", maxkey)
         folder_rooms = Folder("Rooms", maxkey)
         
-        self.set_key(0, "Lights", "icon platzhalter", folder_lights)
-        self.set_key(1, "Rooms", "icon platzhalter", folder_rooms)
+        self.set_key(0, "Lights", "light.png", folder_lights)
+        self.set_key(1, "Rooms", "room.png", folder_rooms)
         
         
         #parse json resonse to get ip
@@ -38,14 +38,37 @@ class Hue_Folder(Folder):
             
             i = 0
             for light in self.bridge.lights:
-                f = Folder(light.name, maxkey)
-                folder_lights.set_key(i, light.name, "platzhalter", None)
+                f = Hue_Light_Folder(light.name, maxkey, self.bridge, light)
+                folder_lights.set_key(i, light.name, "light.png", f)
                 i += 1
                 
             i = 0
             for group in self.bridge.groups:
                 f = Folder(group.name, maxkey)
-                folder_rooms.set_key(i, group.name, "platzhalter", None)
+                folder_rooms.set_key(i, group.name, "room.png", None)
                 i += 1
-        
+
+
+
+class Hue_Light_Folder(Folder):
+    bridge = None
+    light = None
     
+    def __init__(self, name, maxkey, bridge, light):
+        super().__init__(name, maxkey)
+        self.light = light
+        self.bridge = bridge
+        
+        self.set_key(0, "On", "platzhalter", self.on_off)
+        self.set_key(1, "Brightness 25%", "platzhalter", lambda: self.set_bri(64))
+        self.set_key(2, "Brightness 50%", "platzhalter", lambda: self.set_bri(128))
+        self.set_key(3, "Brightness 75%", "platzhalter", lambda: self.set_bri(192))
+        self.set_key(4, "Brightness 100%", "platzhalter", lambda: self.set_bri(255))
+        
+    def on_off(self):
+        self.light.on ^= True
+
+    def set_bri(self, bri):
+        print("test")
+        print(bri)
+        self.light.brightness = bri

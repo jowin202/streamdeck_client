@@ -12,3 +12,4 @@ class Key:
         self.icon = icon
         self.callback = callback
         self.text = text
+        

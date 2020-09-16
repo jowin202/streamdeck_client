@@ -12,7 +12,7 @@ class Folder:
         self.maxkey = maxkey
         self.name = name
         self.keys = [None] * maxkey
-        self.keys[maxkey-1] = Key(None, "Back", None, None)
+        self.keys[maxkey-1] = Key(None, "Back", "back.jpg", None)
         self.keys[maxkey-1].is_back_button = True
         #todo back button
         
@@ -31,7 +31,7 @@ class Folder:
         if current_dir.keys[keynr] != None and current_dir.keys[keynr].is_back_button:
             current_dir.prev_dir.next_dir = None
         elif current_dir.keys[keynr] == None or current_dir.keys[keynr].callback == None:
-            print("button " + str(keynr) + " in folder " + str(self.name) + " does not work")
+            print("button " + str(keynr) + " in folder " + str(current_dir.name) + " does not work")
         elif issubclass(type(current_dir.keys[keynr].callback), Folder): 
             current_dir.next_dir = current_dir.keys[keynr].callback
         else:
@@ -48,6 +48,18 @@ class Folder:
         indent = '\t' * depth
         for i in range(self.maxkey):
             if self.keys[i] != None:
-                print(indent + self.keys[i].text)
+                print(indent + str(i) + ": " + self.keys[i].text)
                 if issubclass(type(self.keys[i].callback), Folder):
                     self.keys[i].callback.show_dir(depth+1)
+                    
+    def get_keys(self):
+        current_dir = self
+        while current_dir.next_dir != None:
+            current_dir = current_dir.next_dir
+            
+        res = {}
+        for i in range(self.maxkey):
+            if current_dir.keys[i] != None:
+                res[i] = [current_dir.keys[i].icon, current_dir.keys[i].text]
+        return res
+                    
