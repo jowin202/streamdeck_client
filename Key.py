@@ -3,6 +3,7 @@
 class Key:
     keynr = -1
     icon = None
+    text = ""
     callback = None
     is_back_button = False 
     
@@ -10,4 +11,4 @@ class Key:
         self.keynr= keynr
         self.icon = icon
         self.callback = callback
-        
+        self.text = text

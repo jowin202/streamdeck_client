@@ -12,7 +12,7 @@ class Folder:
         self.maxkey = maxkey
         self.name = name
         self.keys = [None] * maxkey
-        self.keys[maxkey-1] = Key(None, None, None, None)
+        self.keys[maxkey-1] = Key(None, "Back", None, None)
         self.keys[maxkey-1].is_back_button = True
         #todo back button
         
@@ -43,3 +43,11 @@ class Folder:
             self.next_dir.current_dir()
         elif self.next_dir == None:
             print(self.name)
+
+    def show_dir(self, depth = 0):
+        indent = '\t' * depth
+        for i in range(self.maxkey):
+            if self.keys[i] != None:
+                print(indent + self.keys[i].text)
+                if issubclass(type(self.keys[i].callback), Folder):
+                    self.keys[i].callback.show_dir(depth+1)

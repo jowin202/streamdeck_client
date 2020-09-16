@@ -37,7 +37,7 @@ folder_obs.set_key(1, "Streaming", "icon platzhalter", toggle_streaming)
 
 
 
-root.current_dir()
+'''root.current_dir()
 root.key_pressed_callback(5)
 root.key_pressed_callback(6)
 root.key_pressed_callback(2)
@@ -52,10 +52,14 @@ root.key_pressed_callback(4)
 root.current_dir()
 root.key_pressed_callback(0)
 root.current_dir()
+root.key_pressed_callback(0)
+root.current_dir()
 root.key_pressed_callback(31)
 root.key_pressed_callback(1)
 root.current_dir()
 root.key_pressed_callback(31)
-root.current_dir()
+root.current_dir()'''
+
+root.show_dir()
 
 
