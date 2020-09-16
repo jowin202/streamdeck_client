@@ -12,9 +12,10 @@ from streamdeck import render_key_image
 from Folder import Folder
 from Key import Key
 
+from LaTeX import LaTeX_Folder
 from Hue import Hue_Folder
 
-from OBS import *
+from OBS import OBS_Folder
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), "icons")
 
@@ -22,9 +23,9 @@ ICON_PATH = os.path.join(os.path.dirname(__file__), "icons")
 
 root = Folder("root", 32)
 
-folder_latex = Folder("LaTeX", 32)
+folder_latex = LaTeX_Folder(32)
 folder_xournal = Folder("Xournal", 32)
-folder_obs = Folder("OBS", 32)
+folder_obs = OBS_Folder(32)
 folder_epson = Folder("Epson", 32)
 folder_hue = Hue_Folder(32)
 
@@ -35,8 +36,6 @@ root.set_key(3, "Epson", "epson.jpg", folder_epson)
 root.set_key(4, "Hue", "hue.png", folder_hue)
 
 
-folder_obs.set_key(0, "Recording", "icon platzhalter", toggle_recording)
-folder_obs.set_key(1, "Streaming", "icon platzhalter", toggle_streaming)
 
 
 
@@ -91,7 +90,6 @@ def key_change_callback(deck, key, state):
     print("Deck {} Key {} = {}".format(deck.id(), key, state), flush=True)
     if state == True:
         root.key_pressed_callback(key)
-        root.current_dir()
     else:
         deck.reset()
         update_buttons(deck)

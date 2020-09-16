@@ -48,7 +48,7 @@ def render_key_image(deck, icon_filename, font_filename, label_text):
     try:
         icon = Image.open(icon_filename)
     except:
-        icon = Image.open(os.path.join(ICON_PATH, "notfound.png")))
+        icon = Image.open(os.path.join(ICON_PATH, "notfound.png"))
         
     image = create_scaled_image(deck, icon, margins=[0, 0, 20, 0])
 
