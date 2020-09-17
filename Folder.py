@@ -22,20 +22,19 @@ class Folder:
         self.keys[keynr] = Key(keynr, text, icon, callback)
         
         
-    #export this from class
     def key_pressed_callback(self, keynr):
-        current_dir = self
-        while current_dir.next_dir != None:
-            current_dir = current_dir.next_dir
+        if self.next_dir != None:
+            self.next_dir.key_pressed_callback(keynr)
+            return
         
-        if current_dir.keys[keynr] != None and current_dir.keys[keynr].is_back_button:
-            current_dir.prev_dir.next_dir = None
-        elif current_dir.keys[keynr] == None or current_dir.keys[keynr].callback == None:
-            print("button " + str(keynr) + " in folder " + str(current_dir.name) + " does not work")
-        elif issubclass(type(current_dir.keys[keynr].callback), Folder): 
-            current_dir.next_dir = current_dir.keys[keynr].callback
+        if self.keys[keynr] != None and self.keys[keynr].is_back_button:
+            self.prev_dir.next_dir = None
+        elif self.keys[keynr] == None or self.keys[keynr].callback == None:
+            print("button " + str(keynr) + " in folder " + str(self.name) + " does not work")
+        elif issubclass(type(self.keys[keynr].callback), Folder): 
+            self.next_dir = self.keys[keynr].callback
         else:
-            current_dir.keys[keynr].callback()
+            self.keys[keynr].callback()
         
     
     def current_dir(self):
@@ -53,13 +52,12 @@ class Folder:
                     self.keys[i].callback.show_dir(depth+1)
                     
     def get_keys(self):
-        current_dir = self
-        while current_dir.next_dir != None:
-            current_dir = current_dir.next_dir
+        if self.next_dir != None:
+            return self.next_dir.get_keys() #recursion
             
         res = {}
         for i in range(self.maxkey):
-            if current_dir.keys[i] != None:
-                res[i] = [current_dir.keys[i].icon, current_dir.keys[i].text]
+            if self.keys[i] != None:
+                res[i] = [self.keys[i].icon, self.keys[i].text]
         return res
                     

@@ -11,6 +11,8 @@ class LaTeX_Folder(Folder):
         self.set_key(1, "Italic", "italic.png", self.italic)
         self.set_key(2, "Underline", "underline.png", self.underline)
         self.set_key(3, "Strikethrough", "strikethrough.png", self.strikethrough)
+        self.set_key(4, "Equation", "eq.png", self.insert_eq)
+        self.set_key(5, "Equation Nr", "eq.png", self.insert_eq_nr)
 
     def bold(self):
         self.keyboard.press(Key.ctrl)
@@ -44,6 +46,18 @@ class LaTeX_Folder(Folder):
         self.keyboard.press('x')
         text = pyperclip.paste()
         text = "\\sout{" + text + "}"
+        pyperclip.copy(text)
+        self.keyboard.press(Key.ctrl)
+        self.keyboard.press('v')
+        
+    def insert_eq(self):
+        text = "\\begin{align*}\n\n\\end{align*}"
+        pyperclip.copy(text)
+        self.keyboard.press(Key.ctrl)
+        self.keyboard.press('v')
+        
+    def insert_eq_nr(self):
+        text = "\\begin{align}\n\n\\end{align}"
         pyperclip.copy(text)
         self.keyboard.press(Key.ctrl)
         self.keyboard.press('v')
