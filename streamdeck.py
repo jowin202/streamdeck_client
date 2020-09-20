@@ -44,12 +44,10 @@ def create_scaled_image(deck, image, margins=[0, 0, 0, 0], background='black'):
     return final_image
 
 
-def render_key_image(deck, icon_filename, font_filename, label_text):
-    try:
-        icon = Image.open(icon_filename)
-    except:
-        icon = Image.open(os.path.join(ICON_PATH, "notfound.png"))
-        
+
+
+def render_key_image(deck, icon, font_filename, label_text):
+
     image = create_scaled_image(deck, icon, margins=[0, 0, 20, 0])
 
     draw = ImageDraw.Draw(image)

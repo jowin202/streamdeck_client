@@ -6,6 +6,7 @@ import threading
 from PIL import Image, ImageDraw, ImageFont
 from StreamDeck.DeviceManager import DeviceManager
 from StreamDeck.ImageHelpers import PILHelper
+import PIL
 
 from streamdeck import render_key_image
 
@@ -81,7 +82,16 @@ def update_buttons(deck):
     keys = root.get_keys()
     for i in keys:
         key = keys[i]
-        img = render_key_image(deck, os.path.join(ICON_PATH, key[0]), os.path.join(ICON_PATH, "font.ttf"), key[1])
+        icon = key[0]
+        if type(icon) == str:
+            icon_filename = os.path.join(ICON_PATH, icon)
+            try:
+                image = Image.open(icon_filename)
+            except:
+                image = Image.open(os.path.join(ICON_PATH, "notfound.png"))
+        elif type(icon) == PIL.Image.Image:
+            image = icon
+        img = render_key_image(deck, image, os.path.join(ICON_PATH, "font.ttf"), key[1])
         deck.set_key_image(i, img)
 
 

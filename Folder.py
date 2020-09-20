@@ -12,7 +12,7 @@ class Folder:
         self.maxkey = maxkey
         self.name = name
         self.keys = [None] * maxkey
-        self.keys[maxkey-1] = Key(None, "Back", "back.jpg", None)
+        self.keys[maxkey-1] = Key(None, "Back", "back.png", None)
         self.keys[maxkey-1].is_back_button = True
         #todo back button
         
@@ -33,6 +33,7 @@ class Folder:
             print("button " + str(keynr) + " in folder " + str(self.name) + " does not work")
         elif issubclass(type(self.keys[keynr].callback), Folder): 
             self.next_dir = self.keys[keynr].callback
+            self.next_dir.on_open()
         else:
             self.keys[keynr].callback()
         
@@ -61,3 +62,5 @@ class Folder:
                 res[i] = [self.keys[i].icon, self.keys[i].text]
         return res
                     
+    def on_open(self):
+        pass # override, for updating content when opened
