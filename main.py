@@ -15,6 +15,7 @@ from Key import Key
 
 from LaTeX import LaTeX_Folder
 from Hue import Hue_Folder
+from Xournal import Xournal_Folder
 
 from OBS import OBS_Folder
 
@@ -25,7 +26,7 @@ ICON_PATH = os.path.join(os.path.dirname(__file__), "icons")
 root = Folder("root", 32)
 
 folder_latex = LaTeX_Folder(32)
-folder_xournal = Folder("Xournal", 32)
+folder_xournal = Xournal_Folder(32)
 folder_obs = OBS_Folder(32)
 folder_epson = Folder("Epson", 32)
 folder_hue = Hue_Folder(32)

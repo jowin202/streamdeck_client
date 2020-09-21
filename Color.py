@@ -32,23 +32,12 @@ class Color_Folder(Folder):
     
     def __init__(self, maxkey):
         super().__init__("Color", maxkey)
-        self.update_buttons()
-        
-    def update_buttons(self):
         self.set_key(1, "", self.create_icon("+1"), lambda: self.change_value('r', 16))
         self.set_key(2, "", self.create_icon("+1"), lambda: self.change_value('r', 1))
         self.set_key(3, "", self.create_icon("+1"), lambda: self.change_value('g', 16))
         self.set_key(4, "", self.create_icon("+1"), lambda: self.change_value('g', 1))
         self.set_key(5, "", self.create_icon("+1"), lambda: self.change_value('b', 16))
         self.set_key(6, "", self.create_icon("+1"), lambda: self.change_value('b', 1))
-        
-        self.set_key (9, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.r//16)), None)
-        self.set_key(10, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.r % 16)), None)
-        self.set_key(11, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.g//16)), None)
-        self.set_key(12, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.g % 16)), None)
-        self.set_key(13, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.b//16)), None)
-        self.set_key(14, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.b % 16)), None)
-        
         
         self.set_key(17, "", self.create_icon("-1"), lambda: self.change_value('r', -16))
         self.set_key(18, "", self.create_icon("-1"), lambda: self.change_value('r', -1))
@@ -67,6 +56,19 @@ class Color_Folder(Folder):
         self.set_key(28, "", self.create_icon_color(255,0,255, ''), lambda: self.set_color(255,0,255))
         self.set_key(29, "", self.create_icon_color(0,255,255, ''), lambda: self.set_color(0,255,255))
         self.set_key(30, "", self.create_icon_color(255,255,255, ''), lambda: self.set_color(255,255,255))
+        
+        
+        self.update_buttons()
+        
+    def update_buttons(self):        
+        self.set_key (9, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.r//16)), None)
+        self.set_key(10, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.r % 16)), None)
+        self.set_key(11, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.g//16)), None)
+        self.set_key(12, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.g % 16)), None)
+        self.set_key(13, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.b//16)), None)
+        self.set_key(14, "", self.create_icon_color(self.r,self.g,self.b, to_hex(self.b % 16)), None)
+        
+        
         if self.color_changed_callback != None:
             self.color_changed_callback(self.r,self.g,self.b)
 
@@ -114,5 +116,6 @@ class Color_Folder(Folder):
         self.update_buttons()
     
     def on_open(self):
-        self.r, self.g, self.b = self.color_source()
+        if self.color_source != None:
+            self.r, self.g, self.b = self.color_source()
         self.update_buttons()
