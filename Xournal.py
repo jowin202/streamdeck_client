@@ -11,6 +11,21 @@ class Xournal_Folder(Folder):
         color = Color_Folder(32)
         color.color_changed_callback = self.send_color
         
+        
+        self.set_key(0, "Pen", "xournal_pencil.png", self.set_pen)
+        self.set_key(1, "Eraser", "xournal_eraser.png", self.set_eraser)
+        self.set_key(2, "Highlighter", "xournal_highlighter.png", self.set_highlighter)
+        self.set_key(3, "Rectangle", "xournal_rect.png", self.set_rect)
+        self.set_key(4, "Vspace", "xournal_vspace.png", self.set_vspace)
+        self.set_key(5, "Move", "xournal_move.png", self.set_move)
+        
+        self.set_key(8, "Very Thin", "thickness_very_fine.png", lambda: self.set_thickness(0))
+        self.set_key(9, "Thin", "thickness_fine.png", lambda: self.set_thickness(1))
+        self.set_key(10, "Medium", "thickness_medium.png", lambda: self.set_thickness(2))
+        self.set_key(11, "Thick", "thickness_thick.png", lambda: self.set_thickness(3))
+        self.set_key(12, "Very Thick", "thickness_very_thick.png", lambda: self.set_thickness(4))
+
+
         self.set_key(16, "Black", self.create_icon_color(0,0,0), lambda: self.send_color(0,0,0))
         self.set_key(17, "Blue", self.create_icon_color(0,0,255), lambda: self.send_color(0,0,255))
         self.set_key(18, "Red", self.create_icon_color(255,0,0), lambda: self.send_color(255,0,0))
@@ -38,3 +53,49 @@ class Xournal_Folder(Folder):
         s.connect(('localhost', 2345))
         s.sendall(msg.encode())
 
+
+    def set_pen(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"select_pen")
+        
+    def set_eraser(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"select_eraser")
+        
+        
+    def set_highlighter(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"select_highlighter")
+        
+    def set_rect(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"select_rect")
+        
+    def set_vspace(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"select_vspace")
+        
+    def set_move(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"select_move")
+        
+        
+    def set_thickness(self, val):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        if val == 0:
+            s.sendall(b"pen_veryfine")
+        elif val == 1:
+            s.sendall(b"pen_fine")
+        elif val == 2:
+            s.sendall(b"pen_medium")
+        elif val == 3:
+            s.sendall(b"pen_thick")
+        elif val == 4:
+            s.sendall(b"pen_verythick")
