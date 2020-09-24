@@ -24,6 +24,7 @@ class Xournal_Folder(Folder):
         self.set_key(10, "Medium", "thickness_medium.png", lambda: self.set_thickness(2))
         self.set_key(11, "Thick", "thickness_thick.png", lambda: self.set_thickness(3))
         self.set_key(12, "Very Thick", "thickness_very_thick.png", lambda: self.set_thickness(4))
+        self.set_key(13, "Sensitivity", "xournal_sensitivity.png", self.toggle_sensitivity)
 
 
         self.set_key(16, "Black", self.create_icon_color(0,0,0), lambda: self.send_color(0,0,0))
@@ -84,6 +85,11 @@ class Xournal_Folder(Folder):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(('localhost', 2345))
         s.sendall(b"select_move")
+        
+    def toggle_sensitivity(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"toggle_sensitivity")
         
         
     def set_thickness(self, val):
