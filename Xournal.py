@@ -19,6 +19,11 @@ class Xournal_Folder(Folder):
         self.set_key(4, "Vspace", "xournal_vspace.png", self.set_vspace)
         self.set_key(5, "Move", "xournal_move.png", self.set_move)
         
+        
+        self.set_key(7, "New Page before", "xournal_newpage.png", self.newpage_before)
+        self.set_key(15, "New Page after", "xournal_newpage.png", self.newpage_after)
+        self.set_key(23, "New Page end", "xournal_newpage.png", self.newpage_end)
+        
         self.set_key(8, "Very Thin", "thickness_very_fine.png", lambda: self.set_thickness(0))
         self.set_key(9, "Thin", "thickness_fine.png", lambda: self.set_thickness(1))
         self.set_key(10, "Medium", "thickness_medium.png", lambda: self.set_thickness(2))
@@ -91,7 +96,21 @@ class Xournal_Folder(Folder):
         s.connect(('localhost', 2345))
         s.sendall(b"toggle_sensitivity")
         
-        
+    def newpage_before(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"newpage_before")
+    
+    def newpage_after(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"newpage_after")
+
+    def newpage_end(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"newpage_end")
+    
     def set_thickness(self, val):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(('localhost', 2345))
