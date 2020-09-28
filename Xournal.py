@@ -19,6 +19,9 @@ class Xournal_Folder(Folder):
         self.set_key(4, "Vspace", "xournal_vspace.png", self.set_vspace)
         self.set_key(5, "Move", "xournal_move.png", self.set_move)
         
+        self.set_key(6, "Graph", "xournal_graph.png", self.set_graph)
+        self.set_key(14, "Blank", self.create_icon_color(255,255,255), self.set_blank)
+        
         
         self.set_key(7, "New Page before", "xournal_newpage.png", self.newpage_before)
         self.set_key(15, "New Page after", "xournal_newpage.png", self.newpage_after)
@@ -110,6 +113,17 @@ class Xournal_Folder(Folder):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(('localhost', 2345))
         s.sendall(b"newpage_end")
+    
+
+    def set_graph(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"paper_graph")
+    
+    def set_blank(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', 2345))
+        s.sendall(b"paper_blank")
     
     def set_thickness(self, val):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
