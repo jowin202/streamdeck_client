@@ -2,6 +2,7 @@
 
 import os
 import threading
+import time
 
 from PIL import Image, ImageDraw, ImageFont
 from StreamDeck.DeviceManager import DeviceManager
@@ -29,13 +30,13 @@ folder_latex = LaTeX_Folder(32)
 folder_xournal = Xournal_Folder(32)
 folder_obs = OBS_Folder(32)
 folder_epson = Folder("Epson", 32)
-folder_hue = Hue_Folder(32)
+#folder_hue = Hue_Folder(32)
 
 root.set_key(0, "LaTeX", "latex.png", folder_latex)
 root.set_key(1, "Xournal", "xournal/xournal.png", folder_xournal)
 root.set_key(2, "OBS", "obs.png", folder_obs)
 root.set_key(3, "Epson", "epson.jpg", folder_epson)
-root.set_key(4, "Hue", "hue.png", folder_hue)
+#root.set_key(4, "Hue", "hue.png", folder_hue)
 
 
 
@@ -104,30 +105,36 @@ def key_change_callback(deck, key, state):
     else:
         deck.reset()
         update_buttons(deck)
-    
-streamdecks = DeviceManager().enumerate()
-print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
-for index, deck in enumerate(streamdecks):
-    deck.open()
-    deck.reset()
 
-    print("Opened '{}' device (serial number: '{}')".format(deck.deck_type(), deck.get_serial_number()))
 
-    # Set initial screen brightness to 30%.
-    deck.set_brightness(100)
 
-    # Set initial key images.
-    update_buttons(deck)
 
-    # Register callback function for when a key state changes.
-    deck.set_key_callback(key_change_callback)
 
-    # Wait until all application threads have terminated (for this example,
-    # this is when all deck handles are closed).
-    for t in threading.enumerate():
-        if t is threading.currentThread():
-            continue
+while True:
+    streamdecks = DeviceManager().enumerate()
+    print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
+    for index, deck in enumerate(streamdecks):
+        deck.open()
+        deck.reset()
 
-        if t.is_alive():
-            t.join()
+        print("Opened '{}' device (serial number: '{}')".format(deck.deck_type(), deck.get_serial_number()))
+
+        # Set initial screen brightness to 30%.
+        deck.set_brightness(100)
+
+        # Set initial key images.
+        update_buttons(deck)
+
+        # Register callback function for when a key state changes.
+        deck.set_key_callback(key_change_callback)
+
+        # Wait until all application threads have terminated (for this example,
+        # this is when all deck handles are closed).
+        for t in threading.enumerate():
+            if t is threading.currentThread():
+                continue
+
+            if t.is_alive():
+                t.join()
+    time.sleep(10)
     
